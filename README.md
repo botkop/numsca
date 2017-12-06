@@ -28,15 +28,33 @@ Add this to build.sbt:
 libraryDependencies += "be.botkop" %% "numsca" % "0.1.0-SNAPSHOT"
 ```
 
+## Why?
+Because I love scala, I want to teach myself deep learning, but everything in deep learning
+is written in python. 
+This library helps me to quickly translate python and numpy code to my favorite language. 
+
+I hope you will find it as useful as I do. 
+
+Pull requests welcome.
+
+## Disclaimer
+This is far from an exhaustive copy of numpy's functionality. I'm adding functionality as I go. 
+That being said, I think many of the most interesting aspects of numpy like slicing, broadcasting and indexing 
+have been successfully implemented.
+
+## Under the hood
+Numsca is a thin layer around [Nd4j](https://nd4j.org/). Thanks, guys!
+
 ## Importing numsca
 ```scala
 import botkop.{numsca => ns}
+import ns.Tensor
 ```
 
 ## Creating a Tensor
 
 ```scala
-scala> Tensor(3,2,1,0)
+scala> Tensor(3, 2, 1, 0)
 [3.00,  2.00,  1.00,  0.00]
 
 scala> ns.zeros(3, 3)
