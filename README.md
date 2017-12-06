@@ -43,7 +43,7 @@ That being said, I think many of the most interesting aspects of numpy like slic
 have been successfully implemented.
 
 ## Under the hood
-Numsca is a thin layer around [Nd4j](https://nd4j.org/). Thanks, guys!
+Numsca piggybacks on [Nd4j](https://nd4j.org/). Thanks, guys!
 
 ## Importing numsca
 ```scala
