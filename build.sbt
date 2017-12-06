@@ -17,3 +17,6 @@ lazy val root = (project in file(".")).
     libraryDependencies += scalaTest % Test
   )
 
+publishTo := Some("Sonatype Snapshots Nexus" at "https://oss.sonatype.org/content/repositories/snapshots")
+credentials += Credentials(Path.userHome / ".ivy2" / "numsca.credentials")
+

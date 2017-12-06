@@ -2,6 +2,7 @@
 # NumSca: NumPy for Scala
 
 NumSca is NumPy for Scala.
+
 For example, here's the famous [neural network in 11 lines of python code](http://iamtrask.github.io/2015/07/12/basic-python-network/), this time in scala:
 
 ```scala
@@ -21,6 +22,11 @@ for (j <- 0 until 60000) {
 All right, this is 12 lines because in scala you need the closing brace. 
 But otherwise it's pretty much the same.
 
+## Dependency
+Add this to build.sbt:
+```scala
+libraryDependencies += "be.botkop" %% "numsca" % "0.1.0-SNAPSHOT"
+```
 
 ## Importing numsca
 ```scala
