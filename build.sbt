@@ -5,7 +5,7 @@ lazy val root = (project in file(".")).
     inThisBuild(List(
       organization := "be.botkop",
       scalaVersion := "2.12.4",
-      version      := "0.1.0-SNAPSHOT"
+      version      := "0.1.0"
     )),
 
     name := "numsca",
@@ -17,6 +17,39 @@ lazy val root = (project in file(".")).
     libraryDependencies += scalaTest % Test
   )
 
-publishTo := Some("Sonatype Snapshots Nexus" at "https://oss.sonatype.org/content/repositories/snapshots")
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots") 
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+}
+
+useGpg := true
+pomIncludeRepository := { _ => false }
+publishMavenStyle := true
+publishArtifact in Test := false
+
 credentials += Credentials(Path.userHome / ".ivy2" / "numsca.credentials")
+
+licenses := Seq("BSD-style" -> url("http://www.opensource.org/licenses/bsd-license.php"))
+
+homepage := Some(url("https://github.com/botkop"))
+
+scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/botkop/numsca"),
+    "scm:git@github.com:botkop/numsca.git"
+  )
+)
+
+developers := List(
+  Developer(
+    id    = "botkop",
+    name  = "Koen Dejonghe",
+    email = "koen@botkop.be",
+    url   = url("https://github.com/botkop")
+  )
+)
+
 
