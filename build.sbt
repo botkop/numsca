@@ -25,24 +25,17 @@ publishTo := {
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
 
-useGpg := true
 pomIncludeRepository := { _ => false }
 publishMavenStyle := true
 publishArtifact in Test := false
-
-credentials += Credentials(Path.userHome / ".ivy2" / "numsca.credentials")
-
 licenses := Seq("BSD-style" -> url("http://www.opensource.org/licenses/bsd-license.php"))
-
 homepage := Some(url("https://github.com/botkop"))
-
 scmInfo := Some(
   ScmInfo(
     url("https://github.com/botkop/numsca"),
     "scm:git@github.com:botkop/numsca.git"
   )
 )
-
 developers := List(
   Developer(
     id    = "botkop",
@@ -51,5 +44,3 @@ developers := List(
     url   = url("https://github.com/botkop")
   )
 )
-
-
