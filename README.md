@@ -1,9 +1,12 @@
 
-# NumSca: NumPy for Scala
+Numsca: Numpy for Scala
+=========================
 
-NumSca is NumPy for Scala.
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.12)
 
-For example, here's the famous [neural network in 11 lines of python code](http://iamtrask.github.io/2015/07/12/basic-python-network/), this time in scala:
+Numsca is numpy for scala.
+
+Here's the famous [neural network in 11 lines of python code](http://iamtrask.github.io/2015/07/12/basic-python-network/), now in scala:
 
 ```scala
 val x = ns.array( 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1).reshape(4, 3)
@@ -19,17 +22,11 @@ for (j <- 0 until 60000) {
   w0 += x.T.dot(l1_delta)
 }
 ``` 
-All right, this is 12 lines because in scala you need the closing brace. 
+This is 12 lines, I know, because in scala you need the closing brace. 
 But otherwise it's pretty much the same.
 
-## Dependency
-Add this to build.sbt:
-```scala
-libraryDependencies += "be.botkop" %% "numsca" % "0.1.0"
-```
-
 ## Why?
-Because I love scala, I want to teach myself deep learning, but everything in deep learning
+Because I love scala. I teach myself deep learning. And everything in deep learning
 is written in python. 
 This library helps me to quickly translate python and numpy code to my favorite language. 
 
@@ -43,7 +40,13 @@ That being said, I think many of the most interesting aspects of numpy like slic
 have been successfully implemented.
 
 ## Under the hood
-Numsca piggybacks on [Nd4j](https://nd4j.org/). Thanks, guys!
+Numsca piggybacks on [Nd4j](https://nd4j.org/). Thanks, people!
+
+## Dependency
+Add this to build.sbt:
+```scala
+libraryDependencies += "be.botkop" %% "numsca" % "0.1.0"
+```
 
 ## Importing numsca
 ```scala
