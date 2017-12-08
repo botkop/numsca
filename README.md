@@ -9,7 +9,7 @@ Numsca is numpy for scala.
 Here's the famous [neural network in 11 lines of python code](http://iamtrask.github.io/2015/07/12/basic-python-network/), now in scala:
 
 ```scala
-val x = ns.array( 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1).reshape(4, 3)
+val x = ns.array(0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1).reshape(4, 3)
 val y = ns.array(0, 1, 1, 0).T
 val w0 = 2 * ns.rand(3, 4) - 1
 val w1 = 2 * ns.rand(4, 1) - 1
