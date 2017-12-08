@@ -25,7 +25,7 @@ But otherwise it's pretty much the same.
 ## Dependency
 Add this to build.sbt:
 ```scala
-libraryDependencies += "be.botkop" %% "numsca" % "0.1.0-SNAPSHOT"
+libraryDependencies += "be.botkop" %% "numsca" % "0.1.0"
 ```
 
 ## Why?
