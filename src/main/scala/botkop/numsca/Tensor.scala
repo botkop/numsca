@@ -202,12 +202,13 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
 
   def rank: Int = array.rank()
 
-  def clip(min: Double, max: Double): Tensor = Tensor(array.data().asDouble().map { x =>
-    if (x < min) min
-    else if (x > max)
-      max
-    else x
-  }).reshape(shape)
+  def clip(min: Double, max: Double): Tensor =
+    Tensor(array.data().asDouble().map { x =>
+      if (x < min) min
+      else if (x > max)
+        max
+      else x
+    }).reshape(shape)
 
   override def toString: String = array.toString
 }

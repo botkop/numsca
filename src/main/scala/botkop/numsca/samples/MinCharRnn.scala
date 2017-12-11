@@ -12,9 +12,9 @@ import scala.io.Source
   */
 object MinCharRnn {
 
-  def process() {
+  def main(args: Array[String]): Unit = {
     // data I/O
-    val data = Source.fromFile("data/sonnets-cleaned.txt").toList
+    val data = Source.fromFile(args.head).toList
     val chars = data.toSet.toList
     val data_size = data.length
     val vocab_size = chars.length
@@ -50,14 +50,13 @@ object MinCharRnn {
       for (t <- inputs.indices) {
         xs(t) = ns.zeros(vocab_size, 1) // encode in 1-of-k representation
         xs(t)(inputs(t), 0) := 1
-
-        val it = if (t > 0) t else inputs.length
-
-        // hs(t) = ns.tanh(ns.dot(Wxh, xs(t)) + ns.dot(Whh, hs(t-1) + bh)) // hidden state
-        hs(t) = ns.tanh(ns.dot(Wxh, xs(t)) + ns.dot(Whh, hs(it-1) + bh)) // hidden state
+        val it = if (t > 0) t else inputs.length // mimic python logic for negative indices
+        hs(t) = ns.tanh(ns.dot(Wxh, xs(t)) + ns.dot(Whh, hs(it - 1) + bh)) // hidden state
         ys(t) = ns.dot(Why, hs(t)) + by // unnormalized log probabilities for next chars
         ps(t) = ns.exp(ys(t)) / ns.sum(ns.exp(ys(t))) // probabilities for next chars
-        loss += -ns.log(ps(t)(targets(t), 0)).squeeze() // softmax (cross-entropy loss)
+        loss += -ns
+          .log(ps(t)(targets(t), 0))
+          .squeeze() // softmax (cross-entropy loss)
       }
       //backward pass: compute gradients going backwards
       val (dWxh, dWhh, dWhy) =
@@ -74,9 +73,8 @@ object MinCharRnn {
         dbh += dhraw
         dWxh += ns.dot(dhraw, xs(t).T)
 
-        val it = if (t > 0) t - 1 else inputs.length - 1
-        dWhh += ns.dot(dhraw, hs(it).T)
-        // dWhh += ns.dot(dhraw, hs(t - 1).T)
+        val it = if (t > 0) t else inputs.length // mimic python logic negative indices
+        dWhh += ns.dot(dhraw, hs(it - 1).T)
         dhnext := ns.dot(Whh.T, dhraw)
       }
       for (dparam <- List(dWxh, dWhh, dWhy, dbh, dby)) {
@@ -98,7 +96,7 @@ object MinCharRnn {
         val y = ns.dot(Why, h) + by
         val p = ns.exp(y) / ns.sum(ns.exp(y))
         /// todo
-        val ix = ns.choice(ns.arange(vocab_size), p = p.ravel())(0).squeeze().toInt
+        val ix = ns.choice(ns.arange(vocab_size), p = p.ravel()).squeeze().toInt
         x := ns.zeros(vocab_size, 1)
         x(ix, 0) := 1
         ixes += ix
@@ -106,8 +104,7 @@ object MinCharRnn {
       ixes
     }
 
-    var n = 0
-    var p = 0
+    var (n, p) = (0, 0)
     val (mWxh, mWhh, mWhy) =
       (ns.zerosLike(Wxh), ns.zerosLike(Whh), ns.zerosLike(Why))
     val (mbh, mby) = (ns.zerosLike(bh), ns.zerosLike(by)) // memory variables for Adagrad
@@ -150,11 +147,6 @@ object MinCharRnn {
       p += seq_length // move data pointer
       n += 1 // iteration counter
     }
-
-  }
-
-  def main(args: Array[String]): Unit = {
-    process()
   }
 
 }

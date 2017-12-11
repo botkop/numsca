@@ -168,10 +168,14 @@ package object numsca {
   }
    */
 
-  def choice(a: Tensor, p: Tensor): Tensor = {
+  def choice(a: Tensor, p: Tensor, size: Option[Array[Int]] = None): Tensor = {
     val z = Nd4j.zeros(a.shape: _*)
     Nd4j.getExecutioner.exec(new Choice(a.array, p.array, z))
-    new Tensor(z)
+    if (size.isEmpty) {
+      new Tensor(z.getScalar(0))
+    } else {
+      new Tensor(z.getScalar(size.get: _*))
+    }
   }
 
   // ops between 2 tensors, with broadcasting
