@@ -2,6 +2,8 @@ package botkop.numsca
 
 import org.nd4j.linalg.api.iter.NdIndexIterator
 import org.nd4j.linalg.api.ndarray.INDArray
+import org.nd4j.linalg.api.ops.random.impl.Choice
+import org.nd4j.linalg.api.rng.Random
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.indexing.{INDArrayIndex, NDArrayIndex}
 import org.nd4j.linalg.ops.transforms.Transforms
@@ -95,6 +97,9 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
   def maximum(d: Double): Tensor = new Tensor(Transforms.max(this.array, d))
   def minimum(other: Tensor): Tensor = Ops.min(this, other)
   def minimum(d: Double): Tensor = new Tensor(Transforms.min(this.array, d))
+
+  def ravel(): Tensor = new Tensor(array.ravel())
+  def ravel(c: Char): Tensor = new Tensor(array.ravel(c))
 
   def slice(i: Int): Tensor = new Tensor(array.slice(i))
   def slice(i: Int, dim: Int): Tensor = new Tensor(array.slice(i, dim))
@@ -196,6 +201,13 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
   def sameElements(other: Tensor): Boolean = data sameElements other.data
 
   def rank: Int = array.rank()
+
+  def clip(min: Double, max: Double): Tensor = Tensor(array.data().asDouble().map { x =>
+    if (x < min) min
+    else if (x > max)
+      max
+    else x
+  }).reshape(shape)
 
   override def toString: String = array.toString
 }

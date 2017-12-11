@@ -3,7 +3,9 @@ package botkop
 import org.nd4j.linalg.api.iter.NdIndexIterator
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.api.ops.impl.indexaccum.{IAMax, IAMin}
+import org.nd4j.linalg.api.ops.random.impl.Choice
 import org.nd4j.linalg.api.rng
+import org.nd4j.linalg.cpu.nativecpu.NDArray
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.factory.Nd4j.PadMode
 import org.nd4j.linalg.ops.transforms.Transforms
@@ -68,6 +70,8 @@ package object numsca {
   def linspace(lower: Double, upper: Double, num: Int): Tensor =
     new Tensor(Nd4j.linspace(lower, upper, num))
 
+  def copy(t: Tensor): Tensor = t.copy()
+
   def abs(t: Tensor): Tensor = new Tensor(Transforms.abs(t.array))
 
   def maximum(t: Tensor, d: Double): Tensor = t.maximum(d)
@@ -131,6 +135,8 @@ package object numsca {
     new Tensor(a)
   }
 
+  def clip(t: Tensor, min: Double, max: Double): Tensor = t.clip(min, max)
+
   def reshape(x: Tensor, shape: Array[Int]): Tensor = x.reshape(shape)
   def reshape(x: Tensor, shape: Int*): Tensor = x.reshape(shape: _*)
 
@@ -161,6 +167,12 @@ package object numsca {
     throw new NotImplementedError()
   }
    */
+
+  def choice(a: Tensor, p: Tensor): Tensor = {
+    val z = Nd4j.zeros(a.shape: _*)
+    Nd4j.getExecutioner.exec(new Choice(a.array, p.array, z))
+    new Tensor(z)
+  }
 
   // ops between 2 tensors, with broadcasting
   object Ops {
