@@ -95,7 +95,6 @@ object MinCharRnn {
         h := ns.tanh(ns.dot(Wxh, x) + ns.dot(Whh, h) + bh)
         val y = ns.dot(Why, h) + by
         val p = ns.exp(y) / ns.sum(ns.exp(y))
-        /// todo
         val ix = ns.choice(ns.arange(vocab_size), p = p.ravel()).squeeze().toInt
         x := ns.zeros(vocab_size, 1)
         x(ix, 0) := 1

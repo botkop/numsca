@@ -23,7 +23,10 @@ for (j <- 0 until 60000) {
 }
 ``` 
 This is 12 lines, I know, because in scala you need the closing brace. 
-But otherwise it's pretty much the same.
+But otherwise it's pretty much the same. 
+Another example: Andrej Karpathy's 
+[Minimal character-level language model with a Vanilla Recurrent Neural Network](https://gist.github.com/karpathy/d4dee566867f8291f086)
+in scala can be found [here](src/main/scala/botkop/numsca/samples/MinCharRnn.scala)
 
 ## Why?
 Because I love scala. I teach myself deep learning. And everything in deep learning
@@ -45,7 +48,7 @@ Numsca piggybacks on [Nd4j](https://nd4j.org/). Thanks, people!
 ## Dependency
 Add this to build.sbt:
 ```scala
-libraryDependencies += "be.botkop" %% "numsca" % "0.1.0"
+libraryDependencies += "be.botkop" %% "numsca" % "0.1.1"
 ```
 
 ## Importing numsca
