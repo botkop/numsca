@@ -3,6 +3,7 @@ Numsca: Numpy for Scala
 =========================
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.12)
+[![Build Status](https://travis-ci.org/botkop/numsca.svg?branch=master)](https://travis-ci.org/botkop/numsca)
 
 Numsca is numpy for scala.
 
