@@ -5,7 +5,7 @@ lazy val root = (project in file(".")).settings(
     List(
       organization := "be.botkop",
       scalaVersion := "2.12.4",
-      version := "0.1.1-SNAPSHOT"
+      version := "0.1.1"
     )),
   name := "numsca",
   libraryDependencies += "org.nd4j" % "nd4j-native-platform" % "0.9.1",
@@ -48,4 +48,4 @@ developers := List(
 
 publishMavenStyle := true
 publishArtifact in Test := false
-skip in publish := true
+// skip in publish := true
