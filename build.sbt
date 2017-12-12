@@ -14,6 +14,8 @@ lazy val root = (project in file(".")).settings(
   libraryDependencies += scalaTest % Test
 )
 
+crossScalaVersions := Seq("2.11.12", "2.12.4")
+
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
