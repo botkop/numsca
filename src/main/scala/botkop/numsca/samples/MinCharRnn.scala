@@ -124,7 +124,7 @@ object MinCharRnn {
       if (n % 100 == 0) {
         val sample_ix = sample(hprev, inputs.head, 200)
         val txt = sample_ix.map(t => ix_to_char(t)).mkString
-        println(s"----\n $txt \n----")
+        println(s"----\n$txt\n----")
       }
 
       // forward seq_length characters through the net and fetch gradient

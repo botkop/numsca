@@ -414,4 +414,23 @@ class NumscaSpec extends FlatSpec with Matchers {
 
   }
 
+  it should "implement gte" in {
+    val a = ns.zeros(3, 3) + 2
+    val b = ns.linspace(0, 8, 9).reshape(3, 3)
+    val c = a >= b
+
+    assert(ns.arrayEqual(c, Tensor(1, 1, 1, 0, 0, 0, 0, 0, 0).reshape(3, 3)))
+    assert(ns.arrayEqual(a, ns.zeros(3, 3) + 2))
+    assert(ns.arrayEqual(b, ns.linspace(0, 8, 9).reshape(3, 3)))
+  }
+
+  it should "implement lte" in {
+    val a = ns.zeros(3, 3) + 2
+    val b = ns.linspace(0, 8, 9).reshape(3, 3)
+    val c = a <= b
+
+    assert(ns.arrayEqual(c, Tensor(0, 0, 1, 1, 1, 1, 1, 1, 1).reshape(3, 3)))
+    assert(ns.arrayEqual(a, ns.zeros(3, 3) + 2))
+    assert(ns.arrayEqual(b, ns.linspace(0, 8, 9).reshape(3, 3)))
+  }
 }

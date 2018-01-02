@@ -5,7 +5,7 @@ lazy val root = (project in file(".")).settings(
     List(
       organization := "be.botkop",
       scalaVersion := "2.12.4",
-      version := "0.1.1"
+      version := "0.1.2-SNAPSHOT"
     )),
   name := "numsca",
   libraryDependencies += "org.nd4j" % "nd4j-native-platform" % "0.9.1",
@@ -44,7 +44,7 @@ developers := List(
     id = "botkop",
     name = "Koen Dejonghe",
     email = "koen@botkop.be",
-    url = url("https://github.com/botkop")
+    url = url("http://botkop.be")
   )
 )
 

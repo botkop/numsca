@@ -3,9 +3,9 @@ package botkop
 import org.nd4j.linalg.api.iter.NdIndexIterator
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.api.ops.impl.indexaccum.{IAMax, IAMin}
+import org.nd4j.linalg.api.ops.impl.transforms.comparison.{GreaterThanOrEqual, LessThanOrEqual}
 import org.nd4j.linalg.api.ops.random.impl.Choice
 import org.nd4j.linalg.api.rng
-import org.nd4j.linalg.cpu.nativecpu.NDArray
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.factory.Nd4j.PadMode
 import org.nd4j.linalg.ops.transforms.Transforms
@@ -211,9 +211,23 @@ package object numsca {
       new Tensor(ba1.gt(ba2), true)
     }
 
+    def gte(t1: Tensor, t2: Tensor): Tensor = {
+      val Seq(ba1, ba2) = tbc(t1, t2)
+      val d = ba1.dup()
+      Nd4j.getExecutioner.exec(new GreaterThanOrEqual(d, ba2, d, d.length()))
+      new Tensor(d, true)
+    }
+
     def lt(t1: Tensor, t2: Tensor): Tensor = {
       val Seq(ba1, ba2) = tbc(t1, t2)
       new Tensor(ba1.lt(ba2), true)
+    }
+
+    def lte(t1: Tensor, t2: Tensor): Tensor = {
+      val Seq(ba1, ba2) = tbc(t1, t2)
+      val d = ba1.dup()
+      Nd4j.getExecutioner.exec(new LessThanOrEqual(d, ba2, d, d.length()))
+      new Tensor(d, true)
     }
 
     def eq(t1: Tensor, t2: Tensor): Tensor = {
