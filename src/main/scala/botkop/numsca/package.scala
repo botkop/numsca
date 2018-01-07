@@ -55,6 +55,8 @@ package object numsca {
   }
   def ones(shape: Array[Int]): Tensor = ones(shape: _*)
 
+  def full(shape: Array[Int], value: Double): Tensor = zeros(shape) + value
+
   def randn(shape: Int*): Tensor = new Tensor(Nd4j.randn(shape.toArray))
   def randn(shape: Array[Int]): Tensor = randn(shape: _*)
 
@@ -199,6 +201,11 @@ package object numsca {
     def div(t1: Tensor, t2: Tensor): Tensor = {
       val Seq(ba1, ba2) = tbc(t1, t2)
       new Tensor(ba1.div(ba2))
+    }
+
+    def pow(t1: Tensor, t2: Tensor): Tensor = {
+      val Seq(ba1, ba2) = tbc(t1, t2)
+      new Tensor(Transforms.pow(ba1, ba2))
     }
 
     def mod(t1: Tensor, t2: Tensor): Tensor = {
