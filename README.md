@@ -23,7 +23,7 @@ for (j <- 0 until 60000) {
   w0 += x.T.dot(l1_delta)
 }
 ``` 
-This is 12 lines, I know, because in scala you need the closing brace. 
+This is 12 lines, because in scala you need the closing brace. 
 But otherwise it's pretty much the same. 
 Another example: a scala translation of Andrej Karpathy's 
 ['Minimal character-level language model with a Vanilla Recurrent Neural Network'](https://gist.github.com/karpathy/d4dee566867f8291f086)
