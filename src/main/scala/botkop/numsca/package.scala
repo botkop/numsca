@@ -3,7 +3,10 @@ package botkop
 import org.nd4j.linalg.api.iter.NdIndexIterator
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.api.ops.impl.indexaccum.{IAMax, IAMin}
-import org.nd4j.linalg.api.ops.impl.transforms.comparison.{GreaterThanOrEqual, LessThanOrEqual}
+import org.nd4j.linalg.api.ops.impl.transforms.comparison.{
+  GreaterThanOrEqual,
+  LessThanOrEqual
+}
 import org.nd4j.linalg.api.ops.random.impl.Choice
 import org.nd4j.linalg.api.rng
 import org.nd4j.linalg.factory.Nd4j
@@ -68,6 +71,11 @@ package object numsca {
     Tensor(data).reshape(shape)
   }
   def randint(low: Int, shape: Int*): Tensor = randint(low, shape.toArray)
+
+  def uniform(low: Double = 0.0,
+              high: Double = 1.0,
+              shape: Array[Int]): Tensor =
+    (new Tensor(Nd4j.randn(shape)) - low) / (high - low)
 
   def linspace(lower: Double, upper: Double, num: Int): Tensor =
     new Tensor(Nd4j.linspace(lower, upper, num))
