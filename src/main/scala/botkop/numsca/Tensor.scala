@@ -2,8 +2,6 @@ package botkop.numsca
 
 import org.nd4j.linalg.api.iter.NdIndexIterator
 import org.nd4j.linalg.api.ndarray.INDArray
-import org.nd4j.linalg.api.ops.random.impl.Choice
-import org.nd4j.linalg.api.rng.Random
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.indexing.{INDArrayIndex, NDArrayIndex}
 import org.nd4j.linalg.ops.transforms.Transforms
@@ -62,7 +60,7 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
   def +(other: Tensor): Tensor = Ops.add(this, other)
   def -(other: Tensor): Tensor = Ops.sub(this, other)
   def *(other: Tensor): Tensor = Ops.mul(this, other)
-  def **(other: Tensor): Tensor = Ops.pow(this, other)
+  // def **(other: Tensor): Tensor = Ops.pow(this, other)
   def /(other: Tensor): Tensor = Ops.div(this, other)
   def %(other: Tensor): Tensor = Ops.mod(this, other)
   def >(other: Tensor): Tensor = Ops.gt(this, other)
