@@ -213,7 +213,11 @@ package object numsca {
 
     def pow(t1: Tensor, t2: Tensor): Tensor = {
       val Seq(ba1, ba2) = tbc(t1, t2)
-      new Tensor(Transforms.pow(ba1, ba2))
+      // there is a bug in nd4j:
+      // c = a ** b
+      // updates a, so that a == c
+      // therefore we make a copy of a before executing pow
+      new Tensor(Transforms.pow(ba1.dup(), ba2))
     }
 
     def mod(t1: Tensor, t2: Tensor): Tensor = {
