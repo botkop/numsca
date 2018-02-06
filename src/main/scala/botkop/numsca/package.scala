@@ -147,6 +147,9 @@ package object numsca {
 
   def clip(t: Tensor, min: Double, max: Double): Tensor = t.clip(min, max)
 
+  def concatenate(ts: Seq[Tensor], axis: Int): Tensor =
+    new Tensor(Nd4j.concat(axis, ts.map(_.array): _*))
+
   def reshape(x: Tensor, shape: Array[Int]): Tensor = x.reshape(shape)
   def reshape(x: Tensor, shape: Int*): Tensor = x.reshape(shape: _*)
 
@@ -220,7 +223,7 @@ package object numsca {
       // therefore we make a copy of a before executing pow
       new Tensor(Transforms.pow(ba1.dup(), ba2))
     }
-    */
+     */
 
     def mod(t1: Tensor, t2: Tensor): Tensor = {
       val Seq(ba1, ba2) = tbc(t1, t2)
