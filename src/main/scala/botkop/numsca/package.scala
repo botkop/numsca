@@ -105,6 +105,7 @@ package object numsca {
     new Tensor(Nd4j.arange(start, end))
 
   def sigmoid(t: Tensor): Tensor = new Tensor(Transforms.sigmoid(t.array))
+  def softmax(t: Tensor): Tensor = new Tensor(Transforms.softmax(t.array))
   def relu(t: Tensor): Tensor = new Tensor(Transforms.relu(t.array))
   def tanh(t: Tensor): Tensor = new Tensor(Transforms.tanh(t.array))
   def log(t: Tensor): Tensor = new Tensor(Transforms.log(t.array))
