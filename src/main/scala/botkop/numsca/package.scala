@@ -135,11 +135,20 @@ package object numsca {
   def mean(t: Tensor): Tensor = new Tensor(Nd4j.mean(t.array))
   def mean(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.mean(t.array, axis))
 
+  // really do not understand how they calculate the variance and std in nd4j
+  def variance(t: Tensor): Tensor = mean((t - mean(t)) ** 2)
+  def variance(t: Tensor, axis: Int): Tensor =
+    mean((t - mean(t, axis)) ** 2, axis)
+  def std(t: Tensor): Tensor = sqrt(variance(t))
+  def std(t: Tensor, axis: Int): Tensor = sqrt(variance(t, axis))
+
+  /*
+  def variance(t: Tensor): Tensor = new Tensor(Nd4j.`var`(t.array))
   def variance(t: Tensor, axis: Int): Tensor =
     new Tensor(Nd4j.`var`(t.array, axis))
-
   def std(t: Tensor): Tensor = new Tensor(Nd4j.std(t.array))
   def std(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.std(t.array, axis))
+   */
 
   def multiply(a: Tensor, b: Tensor): Tensor = a * b
   def dot(a: Tensor, b: Tensor): Tensor = a dot b
