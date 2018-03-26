@@ -10,6 +10,7 @@ Numsca is numpy for scala.
 Here's the famous [neural network in 11 lines of python code](http://iamtrask.github.io/2015/07/12/basic-python-network/), now in scala:
 
 ```scala
+import botkop.{numsca => ns}
 val x = ns.array(0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1).reshape(4, 3)
 val y = ns.array(0, 1, 1, 0).T
 val w0 = 2 * ns.rand(3, 4) - 1
@@ -23,7 +24,7 @@ for (j <- 0 until 60000) {
   w0 += x.T.dot(l1_delta)
 }
 ``` 
-This is 12 lines, because in scala you need the closing brace. 
+In scala this is 12 lines, since you need the closing brace. 
 But otherwise it's pretty much the same. 
 Another example: a scala translation of Andrej Karpathy's 
 ['Minimal character-level language model with a Vanilla Recurrent Neural Network'](https://gist.github.com/karpathy/d4dee566867f8291f086)
@@ -34,7 +35,7 @@ Because I love scala. I teach myself deep learning. And everything in deep learn
 is written in python. 
 This library helps me to quickly translate python and numpy code to my favorite language. 
 
-I hope you will find it as useful as I do. 
+I hope you find it useful. 
 
 Pull requests welcome.
 
