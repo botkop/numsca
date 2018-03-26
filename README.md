@@ -7,7 +7,7 @@ Numsca: Numpy for Scala
 
 Numsca is numpy for scala.
 
-Here's the famous [neural network in 11 lines of python code](http://iamtrask.github.io/2015/07/12/basic-python-network/), now in scala:
+Here's the famous [neural network in 11 lines of Python](http://iamtrask.github.io/2015/07/12/basic-python-network/), now in scala:
 
 ```scala
 import botkop.{numsca => ns}
@@ -18,21 +18,20 @@ val w1 = 2 * ns.rand(4, 1) - 1
 for (j <- 0 until 60000) {
   val l1 = 1 / (1 + ns.exp(-ns.dot(x, w0)))
   val l2 = 1 / (1 + ns.exp(-ns.dot(l1, w1)))
-  val l2_delta = (y - l2) * (l2 * (1 - l2))
-  val l1_delta = l2_delta.dot(w1.T) * (l1 * (1 - l1))
-  w1 += l1.T.dot(l2_delta)
-  w0 += x.T.dot(l1_delta)
+  val l2Delta = (y - l2) * (l2 * (1 - l2))
+  val l1Delta = l2Delta.dot(w1.T) * (l1 * (1 - l1))
+  w1 += l1.T.dot(l2Delta)
+  w0 += x.T.dot(l1Delta)
 }
 ``` 
-In scala this is 12 lines, since you need the closing brace. 
-But otherwise it's pretty much the same. 
+In scala this is a bit longer, but otherwise it's pretty similar. 
+
 Another example: a scala translation of Andrej Karpathy's 
-['Minimal character-level language model with a Vanilla Recurrent Neural Network'](https://gist.github.com/karpathy/d4dee566867f8291f086)
-can be found [here](src/main/scala/botkop/numsca/samples/MinCharRnn.scala)
+['Minimal character-level language model with a Vanilla Recurrent Neural Network'](src/main/scala/botkop/numsca/samples/MinCharRnn.scala).
+(Compare with Andrej Karpathy's original [post](https://gist.github.com/karpathy/d4dee566867f8291f086).)
 
 ## Why?
-Because I love scala. I teach myself deep learning. And everything in deep learning
-is written in python. 
+I love scala. I teach myself deep learning. Everything in deep learning is written in python. 
 This library helps me to quickly translate python and numpy code to my favorite language. 
 
 I hope you find it useful. 
