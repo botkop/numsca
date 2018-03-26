@@ -24,7 +24,7 @@ for (j <- 0 until 60000) {
   w0 += x.T.dot(l1Delta)
 }
 ``` 
-In scala this is a bit longer, but otherwise it's pretty similar. 
+In scala it may be a bit longer, but otherwise it's pretty similar. 
 
 Another example: a scala translation of Andrej Karpathy's 
 ['Minimal character-level language model with a Vanilla Recurrent Neural Network'](src/main/scala/botkop/numsca/samples/MinCharRnn.scala).
