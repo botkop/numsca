@@ -5,7 +5,7 @@ lazy val root = (project in file(".")).settings(
     List(
       organization := "be.botkop",
       scalaVersion := "2.12.4",
-      version := "0.1.3"
+      version := "0.1.4-SNAPSHOT"
     )),
   name := "numsca",
   libraryDependencies += "org.nd4j" % "nd4j-native-platform" % "0.9.1",
@@ -15,6 +15,9 @@ lazy val root = (project in file(".")).settings(
 )
 
 crossScalaVersions := Seq("2.11.12", "2.12.4")
+
+// for instructions on how to publish to sonatype, see:
+// https://github.com/xerial/sbt-sonatype
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
