@@ -144,10 +144,12 @@ a2: botkop.numsca.Tensor = [0.00,  2.00,  4.00,  6.00,  8.00,  10.00,  12.00,  1
 
 ## Slicing
 Note: 
-- step size is not implemented.
-- Python notation ```t[:3]``` must be written as ```t(0 :> 3)``` or ```t(:>(3))``` 
 - negative indexing is supported
-- ellipsis is not implemented
+- Python notation ```t[:3]``` must be written as ```t(0 :> 3)``` or ```t(:>(3))``` 
+
+Not supported (yet):
+- step size
+- ellipsis
 
 ### Single dimension
 #### Slice over a single dimension
