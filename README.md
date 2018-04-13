@@ -5,9 +5,9 @@ Numsca: Numpy for Scala
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.12)
 [![Build Status](https://travis-ci.org/botkop/numsca.svg?branch=master)](https://travis-ci.org/botkop/numsca)
 
-Numsca is numpy for scala.
+Numsca is Numpy for Scala.
 
-Here's the famous [neural network in 11 lines of Python](http://iamtrask.github.io/2015/07/12/basic-python-network/), now in scala:
+Here's the famous [neural network in 11 lines of Python](http://iamtrask.github.io/2015/07/12/basic-python-network/), translated to Numsca:
 
 ```scala
 import botkop.{numsca => ns}
@@ -24,23 +24,25 @@ for (j <- 0 until 60000) {
   w0 += x.T.dot(l1Delta)
 }
 ``` 
-In scala it may be a bit longer, but otherwise it's pretty similar. 
 
-Another example: a scala translation of Andrej Karpathy's 
+Another example: a Scala translation of Andrej Karpathy's 
 ['Minimal character-level language model with a Vanilla Recurrent Neural Network'](src/main/scala/botkop/numsca/samples/MinCharRnn.scala).
 (Compare with Andrej Karpathy's original [post](https://gist.github.com/karpathy/d4dee566867f8291f086).)
 
+Also have a look at [Scorch](https://github.com/botkop/scorch), a neural net framework in the spirit of [PyTorch](http://pytorch.org/), which uses Numsca.
+
+
 ## Why?
-I love scala. I teach myself deep learning. Everything in deep learning is written in python. 
-This library helps me to quickly translate python and numpy code to my favorite language. 
+I love Scala. I teach myself deep learning. Everything in deep learning is written in Python. 
+This library helps me to quickly translate Python and Numpy code to my favorite language. 
 
 I hope you find it useful. 
 
 Pull requests welcome.
 
 ## Disclaimer
-This is far from an exhaustive copy of numpy's functionality. I'm adding functionality as I go. 
-That being said, I think many of the most interesting aspects of numpy like slicing, broadcasting and indexing 
+This is far from an exhaustive copy of Numpy's functionality. I'm adding functionality as I go. 
+That being said, I think many of the most interesting aspects of Numpy like slicing, broadcasting and indexing 
 have been successfully implemented.
 
 ## Under the hood
@@ -52,7 +54,7 @@ Add this to build.sbt:
 libraryDependencies += "be.botkop" %% "numsca" % "0.1.4"
 ```
 
-## Importing numsca
+## Importing Numsca
 ```scala
 import botkop.{numsca => ns}
 import ns.Tensor
@@ -143,7 +145,7 @@ a2: botkop.numsca.Tensor = [0.00,  2.00,  4.00,  6.00,  8.00,  10.00,  12.00,  1
 ## Slicing
 Note: 
 - step size is not implemented.
-- python notation ```t[:3]``` must be written as ```t(0 :> 3)``` or ```t(:>(3))``` 
+- Python notation ```t[:3]``` must be written as ```t(0 :> 3)``` or ```t(:>(3))``` 
 - negative indexing is supported
 - ellipsis is not implemented
 
@@ -208,7 +210,7 @@ scala> tb(2:>, :>)
 res15: botkop.numsca.Tensor = [6.00,  7.00,  8.00]
 ```
 Mixed range/integer indexing. Note that integers are implicitly translated to ranges, 
-and this differs from python. 
+and this differs from Python. 
 ```scala
 scala> tb(1, 0 :> -1)
 res1: botkop.numsca.Tensor = [3.00,  4.00]
