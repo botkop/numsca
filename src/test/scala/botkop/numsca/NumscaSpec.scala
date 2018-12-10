@@ -433,4 +433,24 @@ class NumscaSpec extends FlatSpec with Matchers {
     assert(ns.arrayEqual(a, ns.zeros(3, 3) + 2))
     assert(ns.arrayEqual(b, ns.linspace(0, 8, 9).reshape(3, 3)))
   }
+
+  it should "argmax" in {
+    val a = ns.arange(10).reshape(2, 5) - 20
+    a(0, 3) := 1
+    a(1, 2) := 1
+    val am = argmax(a, 1)
+    val exp = array(3, 2).reshape(2, 1)
+    assert(ns.arrayEqual(am, exp))
+  }
+
+  it should "argmin" in {
+    val a = ns.arange(10).reshape(2, 5)
+    a(0, 3) := -1
+    a(1, 2) := -1
+    val am = argmin(a, 1)
+    val exp = array(3, 2).reshape(2, 1)
+    assert(ns.arrayEqual(am, exp))
+  }
+
+
 }

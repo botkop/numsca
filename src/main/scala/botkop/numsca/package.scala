@@ -2,11 +2,8 @@ package botkop
 
 import org.nd4j.linalg.api.iter.NdIndexIterator
 import org.nd4j.linalg.api.ndarray.INDArray
-import org.nd4j.linalg.api.ops.impl.indexaccum.{IAMax, IAMin}
-import org.nd4j.linalg.api.ops.impl.transforms.comparison.{
-  GreaterThanOrEqual,
-  LessThanOrEqual
-}
+import org.nd4j.linalg.api.ops.impl.indexaccum.{IAMax, IMax, IMin}
+import org.nd4j.linalg.api.ops.impl.transforms.comparison.{GreaterThanOrEqual, LessThanOrEqual}
 import org.nd4j.linalg.api.ops.random.impl.Choice
 import org.nd4j.linalg.api.rng
 import org.nd4j.linalg.factory.Nd4j
@@ -120,13 +117,13 @@ package object numsca {
     new NdIndexIterator(shape: _*).asScala
 
   def argmax(t: Tensor): Tensor =
-    new Tensor(Nd4j.getExecutioner.exec(new IAMax(t.array)))
+    new Tensor(Nd4j.getExecutioner.exec(new IMax(t.array)))
   def argmax(t: Tensor, axis: Int): Tensor =
-    new Tensor(Nd4j.getExecutioner.exec(new IAMax(t.array), axis))
+    new Tensor(Nd4j.getExecutioner.exec(new IMax(t.array), axis))
   def argmin(t: Tensor, axis: Int): Tensor =
-    new Tensor(Nd4j.getExecutioner.exec(new IAMin(t.array), axis))
+    new Tensor(Nd4j.getExecutioner.exec(new IMin(t.array), axis))
   def argmin(t: Tensor): Tensor =
-    new Tensor(Nd4j.getExecutioner.exec(new IAMin(t.array)))
+    new Tensor(Nd4j.getExecutioner.exec(new IMin(t.array)))
 
   def round(t: Tensor): Tensor = new Tensor(Transforms.round(t.array))
   def ceil(t: Tensor): Tensor = new Tensor(Transforms.ceil(t.array))
