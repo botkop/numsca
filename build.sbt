@@ -5,7 +5,7 @@ lazy val root = (project in file(".")).settings(
     List(
       organization := "be.botkop",
       scalaVersion := "2.12.4",
-      version := "0.1.5-SNAPSHOT"
+      version := "0.1.5"
     )),
   name := "numsca",
   libraryDependencies += "org.nd4j" % "nd4j-native-platform" % "0.9.1",
