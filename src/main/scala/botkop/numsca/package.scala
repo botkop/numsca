@@ -2,12 +2,13 @@ package botkop
 
 import org.nd4j.linalg.api.iter.NdIndexIterator
 import org.nd4j.linalg.api.ndarray.INDArray
+import org.nd4j.linalg.api.buffer.DataType
 import org.nd4j.linalg.api.ops.impl.indexaccum.{IMax, IMin}
-import org.nd4j.linalg.api.ops.impl.transforms.comparison.{GreaterThanOrEqual, LessThanOrEqual}
+import org.nd4j.linalg.api.ops.impl.transforms.custom.{GreaterThanOrEqual, LessThanOrEqual}
+import org.nd4j.linalg.api.ops.impl.transforms._
 import org.nd4j.linalg.api.ops.random.impl.Choice
 import org.nd4j.linalg.api.rng
 import org.nd4j.linalg.factory.Nd4j
-import org.nd4j.linalg.factory.Nd4j.PadMode
 import org.nd4j.linalg.ops.transforms.Transforms
 
 import scala.collection.JavaConverters._
@@ -16,6 +17,7 @@ import scala.util.Random
 
 package object numsca {
 
+  Nd4j.setDefaultDataTypes(DataType.DOUBLE, DataType.DOUBLE)
   implicit def selectionToTensor(ts: TensorSelection): Tensor =
     ts.asTensor
 
@@ -42,40 +44,40 @@ package object numsca {
   def rand: rng.Random = Nd4j.getRandom
 
   def array(ds: Double*) = Tensor(ds: _*)
-  def zeros(shape: Int*): Tensor = new Tensor(Nd4j.zeros(shape: _*))
-  def zeros(shape: Array[Int]): Tensor = zeros(shape: _*)
+  def zeros(shape: Long*): Tensor = new Tensor(Nd4j.zeros(shape: _*))
+  def zeros(shape: Array[Long]): Tensor = zeros(shape: _*)
   def zerosLike(t: Tensor): Tensor = zeros(t.shape)
 
-  def ones(shape: Int*): Tensor = {
+  def ones(shape: Long*): Tensor = {
     if (shape.length == 1)
       // probably a bug in nd4j
-      new Tensor(Nd4j.ones(1 +: shape: _*))
+      new Tensor(Nd4j.ones(1l +: shape: _*))
     else
       new Tensor(Nd4j.ones(shape: _*))
   }
-  def ones(shape: Array[Int]): Tensor = ones(shape: _*)
+  def ones(shape: Array[Long]): Tensor = ones(shape: _*)
 
-  def full(shape: Array[Int], value: Double): Tensor = zeros(shape) + value
+  def full(shape: Array[Long], value: Double): Tensor = zeros(shape) + value
 
-  def randn(shape: Int*): Tensor = new Tensor(Nd4j.randn(shape.toArray))
-  def randn(shape: Array[Int]): Tensor = randn(shape: _*)
+  def randn(shape: Long*): Tensor = new Tensor(Nd4j.randn(shape.toArray: _*))
+  def randn(shape: Array[Long]): Tensor = randn(shape: _*)
 
-  def rand(shape: Int*): Tensor = new Tensor(Nd4j.rand(shape.toArray))
-  def rand(shape: Array[Int]): Tensor = rand(shape: _*)
+  def rand(shape: Long*): Tensor = new Tensor(Nd4j.rand(shape.toArray: _*))
+  def rand(shape: Array[Long]): Tensor = rand(shape: _*)
 
-  def randint(low: Int, shape: Array[Int]): Tensor = {
-    val data = Array.fill(shape.product)(Random.nextInt(low).toDouble)
+  def randint(low: Int, shape: Array[Long]): Tensor = {
+    val data = Array.fill(shape.product.toInt)(Random.nextInt(low).toDouble)
     Tensor(data).reshape(shape)
   }
-  def randint(low: Int, shape: Int*): Tensor = randint(low, shape.toArray)
+  def randint(low: Int, shape: Long*): Tensor = randint(low, shape.toArray)
 
   def uniform(low: Double = 0.0,
               high: Double = 1.0,
               shape: Array[Int]): Tensor =
     (new Tensor(Nd4j.randn(shape)) - low) / (high - low)
 
-  def linspace(lower: Double, upper: Double, num: Int): Tensor =
-    new Tensor(Nd4j.linspace(lower, upper, num))
+  def linspace(lower: Double, upper: Double, num: Long): Tensor =
+    new Tensor(Nd4j.linspace(lower, upper, num, DataType.DOUBLE))
 
   def copy(t: Tensor): Tensor = t.copy()
 
@@ -91,15 +93,14 @@ package object numsca {
   def min(t: Tensor): Tensor = new Tensor(Nd4j.min(t.array))
   def min(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.min(t.array, axis))
 
-  def sum(t: Tensor): Double = Nd4j.sum(t.array).getDouble(0, 0)
+  def sum(t: Tensor): Double = Nd4j.sum(t.array).getDouble(0l, 0l)
   def sum(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.sum(t.array, axis))
 
-  def prod(t: Tensor): Double = Nd4j.prod(t.array).getDouble(0, 0)
+  def prod(t: Tensor): Double = Nd4j.prod(t.array).getDouble(0l, 0l)
   def prod(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.prod(t.array, axis))
 
-  def arange(end: Double): Tensor = new Tensor(Nd4j.arange(end))
-  def arange(start: Double, end: Double): Tensor =
-    new Tensor(Nd4j.arange(start, end))
+  def arange(end: Double): Tensor = new Tensor(Nd4j.arange(end).castTo(DataType.DOUBLE))
+  def arange(start: Double, end: Double): Tensor = new Tensor(Nd4j.arange(start, end).castTo(DataType.DOUBLE))
 
   def sigmoid(t: Tensor): Tensor = new Tensor(Transforms.sigmoid(t.array))
   def softmax(t: Tensor): Tensor = new Tensor(Transforms.softmax(t.array))
@@ -112,18 +113,27 @@ package object numsca {
   def sqrt(t: Tensor): Tensor = new Tensor(Transforms.sqrt(t.array))
   def square(t: Tensor): Tensor = power(t, 2)
 
-  def nditer(t: Tensor): Iterator[Array[Int]] = nditer(t.shape)
-  def nditer(shape: Array[Int]): Iterator[Array[Int]] =
+  def nditer(t: Tensor): Iterator[Array[Long]] = nditer(t.shape)
+  def nditer(shape: Array[Long]): Iterator[Array[Long]] =
     new NdIndexIterator(shape: _*).asScala
 
-  def argmax(t: Tensor): Tensor =
-    new Tensor(Nd4j.getExecutioner.exec(new IMax(t.array)))
-  def argmax(t: Tensor, axis: Int): Tensor =
-    new Tensor(Nd4j.getExecutioner.exec(new IMax(t.array), axis))
-  def argmin(t: Tensor, axis: Int): Tensor =
-    new Tensor(Nd4j.getExecutioner.exec(new IMin(t.array), axis))
-  def argmin(t: Tensor): Tensor =
-    new Tensor(Nd4j.getExecutioner.exec(new IMin(t.array)))
+
+  def argmax(t: Tensor, axis: Int): Tensor = {
+    val indices = Nd4j.getExecutioner.exec(new IMax(t.array, axis)).castTo(DataType.DOUBLE)
+    new Tensor(Nd4j.expandDims(indices, indices.rank))
+  }
+  def argmax(t: Tensor): Tensor = {
+    val indices = Nd4j.getExecutioner.exec(new IMax(t.array)).castTo(DataType.DOUBLE)
+    new Tensor(Nd4j.expandDims(indices, indices.rank))
+  }
+  def argmin(t: Tensor, axis: Int): Tensor = {
+    val indices = Nd4j.getExecutioner.exec(new IMin(t.array, axis)).castTo(DataType.DOUBLE)
+    new Tensor(Nd4j.expandDims(indices, indices.rank))
+  }
+  def argmin(t: Tensor): Tensor = {
+    val indices = Nd4j.getExecutioner.exec(new IMin(t.array)).castTo(DataType.DOUBLE)
+    new Tensor(Nd4j.expandDims(indices, indices.rank))
+  }
 
   def round(t: Tensor): Tensor = new Tensor(Transforms.round(t.array))
   def ceil(t: Tensor): Tensor = new Tensor(Transforms.ceil(t.array))
@@ -150,8 +160,8 @@ package object numsca {
   def multiply(a: Tensor, b: Tensor): Tensor = a * b
   def dot(a: Tensor, b: Tensor): Tensor = a dot b
 
-  def pad(x: Tensor, padWidth: Array[Array[Int]], mode: PadMode): Tensor = {
-    val a = Nd4j.pad(x.array, padWidth, mode)
+  def pad(x: Tensor, padWidth: Array[Array[Int]], mode: Pad.Mode): Tensor = {
+    val a = Nd4j.pad(x.array, padWidth, mode, 0.0d)
     new Tensor(a)
   }
 
@@ -160,18 +170,18 @@ package object numsca {
   def concatenate(ts: Seq[Tensor], axis: Int = 0): Tensor =
     new Tensor(Nd4j.concat(axis, ts.map(_.array): _*))
 
-  def reshape(x: Tensor, shape: Array[Int]): Tensor = x.reshape(shape)
-  def reshape(x: Tensor, shape: Int*): Tensor = x.reshape(shape: _*)
+  def reshape(x: Tensor, shape: Array[Long]): Tensor = x.reshape(shape)
+  def reshape(x: Tensor, shape: Long*): Tensor = x.reshape(shape: _*)
 
   def transpose(x: Tensor): Tensor = x.transpose()
-  def transpose(x: Tensor, axes: Int*): Tensor = x.transpose(axes: _*)
-  def transpose(x: Tensor, axes: Array[Int]): Tensor = x.transpose(axes)
+  def transpose(x: Tensor, axes: Long*): Tensor = x.transpose(axes: _*)
+  def transpose(x: Tensor, axes: Array[Long]): Tensor = x.transpose(axes)
 
-  def arrayEqual(t1: Tensor, t2: Tensor): Boolean = numsca.prod(t1 == t2) == 1
+  def arrayEqual(t1: Tensor, t2: Tensor): Boolean = numsca.prod(new Tensor((t1 == t2).array.castTo(DataType.INT), false)) == 1
 
   def any(x: Tensor): Boolean = {
     require(x.isBoolean)
-    sum(x) > 0
+    sum(new Tensor(x.array.castTo(DataType.INT), false)) > 0
   }
 
   /*
@@ -182,7 +192,7 @@ package object numsca {
 
   def all(x: Tensor): Boolean = {
     require(x.isBoolean)
-    prod(x) > 0
+    prod(new Tensor(x.array.castTo(DataType.INT), false)) > 0
   }
 
   /*
@@ -191,11 +201,11 @@ package object numsca {
   }
    */
 
-  def choice(a: Tensor, p: Tensor, size: Option[Array[Int]] = None): Tensor = {
+  def choice(a: Tensor, p: Tensor, size: Option[Array[Long]] = None): Tensor = {
     val z = Nd4j.zeros(a.shape: _*)
     Nd4j.getExecutioner.exec(new Choice(a.array, p.array, z))
     if (size.isEmpty) {
-      new Tensor(z.getScalar(0))
+      new Tensor(z.getScalar(0l))
     } else {
       new Tensor(z.getScalar(size.get: _*))
     }
@@ -242,36 +252,30 @@ package object numsca {
 
     def gt(t1: Tensor, t2: Tensor): Tensor = {
       val Seq(ba1, ba2) = tbc(t1, t2)
-      new Tensor(ba1.gt(ba2), true)
+      new Tensor(ba1.gt(ba2).castTo(DataType.DOUBLE), true)
     }
 
     def gte(t1: Tensor, t2: Tensor): Tensor = {
-      val Seq(ba1, ba2) = tbc(t1, t2)
-      val d = ba1.dup()
-      Nd4j.getExecutioner.exec(new GreaterThanOrEqual(d, ba2, d, d.length()))
-      new Tensor(d, true)
+      new Tensor((gt(t1, t2) || eq(t1, t2)).array.castTo(DataType.DOUBLE), true)
     }
 
     def lt(t1: Tensor, t2: Tensor): Tensor = {
       val Seq(ba1, ba2) = tbc(t1, t2)
-      new Tensor(ba1.lt(ba2), true)
+      new Tensor(ba1.lt(ba2).castTo(DataType.DOUBLE), true)
     }
 
     def lte(t1: Tensor, t2: Tensor): Tensor = {
-      val Seq(ba1, ba2) = tbc(t1, t2)
-      val d = ba1.dup()
-      Nd4j.getExecutioner.exec(new LessThanOrEqual(d, ba2, d, d.length()))
-      new Tensor(d, true)
+      new Tensor((lt(t1, t2) || eq(t1, t2)).array.castTo(DataType.DOUBLE), true)
     }
 
     def eq(t1: Tensor, t2: Tensor): Tensor = {
       val Seq(ba1, ba2) = tbc(t1, t2)
-      new Tensor(ba1.eq(ba2), true)
+      new Tensor(ba1.eq(ba2).castTo(DataType.DOUBLE), true)
     }
 
     def neq(t1: Tensor, t2: Tensor): Tensor = {
       val Seq(ba1, ba2) = tbc(t1, t2)
-      new Tensor(ba1.neq(ba2), true)
+      new Tensor(ba1.neq(ba2).castTo(DataType.DOUBLE), true)
     }
 
     def max(t1: Tensor, t2: Tensor): Tensor = {
@@ -288,7 +292,7 @@ package object numsca {
       val maxRank = sa.map(_.rank()).max
       sa.map { a =>
         val diff = maxRank - a.rank()
-        val extShape = Array.fill(diff)(1)
+        val extShape = Array.fill(diff)(1l)
         a.reshape(extShape ++ a.shape(): _*)
       }
     }
@@ -296,8 +300,8 @@ package object numsca {
     def broadcastArrays(sa: Seq[INDArray]): Seq[INDArray] = {
       val xa = prepareShapesForBroadcast(sa)
       val rank = xa.head.rank()
-      val finalShape: Array[Int] =
-        xa.map(_.shape()).foldLeft(Array.fill(rank)(0)) {
+      val finalShape: Array[Long] =
+        xa.map(_.shape()).foldLeft(Array.fill(rank)(0l)) {
           case (shp, acc) =>
             shp.zip(acc).map { case (a, b) => math.max(a, b) }
         }

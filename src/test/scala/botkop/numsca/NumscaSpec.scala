@@ -27,8 +27,8 @@ class NumscaSpec extends FlatSpec with Matchers {
     assert(tb(1, 0).squeeze() == 3)
     assert(tc(1, 0, 2).squeeze() == 14)
 
-    val i = List(1, 0, 1)
-    assert(tc(i: _*).squeeze() == 13)
+    val i = Array(1, 0, 1)
+    assert(tc(i).squeeze() == 13)
 
   }
 
@@ -92,19 +92,20 @@ class NumscaSpec extends FlatSpec with Matchers {
 
     assert(ns.arrayEqual(a3, Tensor(1, 1, 1, 1, 1, 1, 1, 1, 1)))
 
-    assert(ns.arrayEqual(ta(:>, 5 :>), Tensor(5, 6, 7, 8, 9)))
-    assert(ns.arrayEqual(ta(:>, :>(5)), Tensor(0, 1, 2, 3, 4)))
-    assert(ns.arrayEqual(ta(:>, -3 :>), Tensor(7, 8, 9)))
+    assert(ns.arrayEqual(ta(5 :>), Tensor(5, 6, 7, 8, 9)))
+    assert(ns.arrayEqual(ta(:>(5)), Tensor(0, 1, 2, 3, 4)))
+    assert(ns.arrayEqual(ta(-3 :>), Tensor(7, 8, 9)))
   }
 
   it should "update over a single dimension" in {
     val t = ta.copy()
+
     t(2 :> 5) := -ns.ones(3)
     val e1 =
       Tensor(0.00, 1.00, -1.00, -1.00, -1.00, 5.00, 6.00, 7.00, 8.00, 9.00)
     assert(ns.arrayEqual(t, e1))
 
-    an[IllegalStateException] should be thrownBy {
+    an[IllegalArgumentException] should be thrownBy {
       t(2 :> 5) := -ns.ones(4)
     }
 
@@ -134,7 +135,7 @@ class NumscaSpec extends FlatSpec with Matchers {
                       -1.00, -1.00, -1.00)))
 
     val s = 3 :> -1
-    assert(ns.arrayEqual(ta(:>, s), Tensor(3.00, 4.00, 5.00, 6.00, 7.00, 8.00)))
+    assert(ns.arrayEqual(ta(s), Tensor(3.00, 4.00, 5.00, 6.00, 7.00, 8.00)))
 
   }
 
@@ -154,9 +155,9 @@ class NumscaSpec extends FlatSpec with Matchers {
     // https://docs.scipy.org/doc/numpy-1.13.0/user/basics.broadcasting.html
     // http://scipy.github.io/old-wiki/pages/EricsBroadcastingDoc
 
-    def verify(shape1: Array[Int],
-               shape2: Array[Int],
-               expectedShape: Array[Int]) = {
+    def verify(shape1: Array[Long],
+               shape2: Array[Long],
+               expectedShape: Array[Long]) = {
       val t1 = ns.ones(shape1)
       val t2 = ns.ones(shape2)
       val Seq(s1, s2) = Ops.tbc(t1, t2)
@@ -268,6 +269,7 @@ class NumscaSpec extends FlatSpec with Matchers {
     val t2 = tb.copy()
     t2(c) += 10
     println(t2)
+
     assert(
       ns.arrayEqual(t2, Tensor(0, 1, 12, 13, 14, 5, 6, 7, 8).reshape(3, 3)))
 
@@ -297,7 +299,9 @@ class NumscaSpec extends FlatSpec with Matchers {
     val numClasses = 3
     val x = ns.arange(numSamples * numClasses).reshape(numSamples, numClasses)
     val y = Tensor(0, 1, 2, 1)
+
     val z = x(ns.arange(numSamples), y)
+
     assert(ns.arrayEqual(z, Tensor(0.00, 4.00, 8.00, 10.00)))
 
   }
@@ -440,6 +444,7 @@ class NumscaSpec extends FlatSpec with Matchers {
     a(1, 2) := 1
     val am = argmax(a, 1)
     val exp = array(3, 2).reshape(2, 1)
+
     assert(ns.arrayEqual(am, exp))
   }
 
@@ -449,6 +454,7 @@ class NumscaSpec extends FlatSpec with Matchers {
     a(1, 2) := -1
     val am = argmin(a, 1)
     val exp = array(3, 2).reshape(2, 1)
+
     assert(ns.arrayEqual(am, exp))
   }
 
