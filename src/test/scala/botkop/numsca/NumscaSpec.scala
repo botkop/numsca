@@ -155,9 +155,9 @@ class NumscaSpec extends FlatSpec with Matchers {
     // https://docs.scipy.org/doc/numpy-1.13.0/user/basics.broadcasting.html
     // http://scipy.github.io/old-wiki/pages/EricsBroadcastingDoc
 
-    def verify(shape1: Array[Long],
-               shape2: Array[Long],
-               expectedShape: Array[Long]) = {
+    def verify(shape1: Array[Int],
+               shape2: Array[Int],
+               expectedShape: Array[Int]) = {
       val t1 = ns.ones(shape1)
       val t2 = ns.ones(shape2)
       val Seq(s1, s2) = Ops.tbc(t1, t2)

@@ -17,24 +17,24 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
 
   def copy(): Tensor = new Tensor(array.dup())
 
-  def shape: Array[Long] = array.shape()
-  def reshape(newShape: Array[Long]) = {
-      new Tensor(array.reshape(newShape: _*))
+  def shape: Array[Int] = array.shape().map(_.toInt)
+  def reshape(newShape: Array[Int]) = {
+      new Tensor(array.reshape(newShape))
   }
-  def reshape(newShape: Long*) = {
-      new Tensor(array.reshape(newShape: _*))
+  def reshape(newShape: Int*) = {
+      new Tensor(array.reshape(newShape.toArray))
   }
 
   def shapeLike(t: Tensor): Tensor = reshape(t.shape)
 
   def transpose() = new Tensor(array.transpose())
   def T: Tensor = transpose()
-  def transpose(axes: Array[Long]): Tensor = {
+  def transpose(axes: Array[Int]): Tensor = {
     require(axes.sorted sameElements shape.indices, "invalid axes")
-    val newShape: Array[Long] = axes.map(a => shape(a.toInt))
+    val newShape: Array[Int] = axes.map(a => shape(a.toInt))
     reshape(newShape)
   }
-  def transpose(axes: Long*): Tensor = transpose(axes.toArray)
+  def transpose(axes: Int*): Tensor = transpose(axes.toArray)
 
   def round: Tensor =
     Tensor(data.map(math.round(_).toDouble)).reshape(this.shape)
@@ -89,7 +89,7 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
   /**
     * broadcast argument tensor with shape of this tensor
     */
-  private def bc(t: Tensor): INDArray = t.array.broadcast(shape: _*)
+  private def bc(t: Tensor): INDArray = t.array.broadcast(shape.map(_.toLong):_*)
 
   def +=(t: Tensor): Unit = array addi bc(t)
   def -=(t: Tensor): Unit = array subi bc(t)
@@ -115,29 +115,21 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
     require(shape.product == 1)
     array.getDouble(0l)
   }
-  def squeeze(index: Long*): Double = array.getDouble(index: _*)
-  def squeeze(index: Array[Long]): Double = squeeze(index: _*)
+  def squeeze(index: Int*): Double = array.getDouble(index: _*)
+  def squeeze(index: Array[Int]): Double = squeeze(index: _*)
 
   /**
     * returns a view
     */
-  def apply(index: Long*): Tensor = {
-    val ix = index.map(NDArrayIndex.point)
+  def apply(index: Int*): Tensor = {
+    val ix = index.map(_.toLong).map(NDArrayIndex.point)
     new Tensor(array.get(ix: _*))
   }
 
   /**
     * returns a view
     */
-  def apply(index: Array[Long]): Tensor = apply(index: _*)
-
-  /**
-    * returns a view
-    */
-  def apply(index: Array[Int]): Tensor = {
-    val longIndex = index.map(_.toLong)
-    apply(longIndex: _*)
-  }
+  def apply(index: Array[Int]): Tensor = apply(index: _*)
 
   private def handleNegIndex(i: Int, shapeIndex: Int) =
     if (i < 0) shape(shapeIndex) + i else i
@@ -168,7 +160,7 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
   }
 
   private def selectIndexes(
-      selection: Seq[Tensor]): (Array[Array[Long]], Option[Array[Long]]) = {
+      selection: Seq[Tensor]): (Array[Array[Int]], Option[Array[Int]]) = {
     if (selection.length == 1) {
       if (selection.head.isBoolean) {
         (indexByBooleanTensor(selection.head), None)
@@ -182,7 +174,7 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
     }
   }
 
-  private def multiIndex(selection: Seq[Tensor]): Array[Array[Long]] = {
+  private def multiIndex(selection: Seq[Tensor]): Array[Array[Int]] = {
     // broadcast selection to same shape
     val ts: Seq[INDArray] = Ops.tbc(selection: _*)
 
@@ -191,22 +183,22 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
             s"shapes must be of rank $rank (was ${ts.map(_.shape().toList)}")
 
     (0 until rank.toInt).map { r =>
-      ts.map(s => s.getLong(0, r)).toArray
+      ts.map(s => s.getInt(0, r)).toArray
     }.toArray
 
   }
 
-  private def indexByBooleanTensor(t: Tensor): Array[Array[Long]] = {
+  private def indexByBooleanTensor(t: Tensor): Array[Array[Int]] = {
     require(t.isBoolean)
     require(t sameShape this)
 
-    new NdIndexIterator(t.shape: _*).asScala.filterNot { ii: Array[Long] =>
+    new NdIndexIterator(t.shape.map(_.toLong): _*).asScala.map(_.map(_.toInt)).filterNot { ii: Array[Int] =>
       t.array.getDouble(ii: _*) == 0
     } toArray
   }
 
-  private def indexByTensor(t: Tensor): Array[Array[Long]] = {
-    t.array.data().asLong().map(i => Array(0, i))
+  private def indexByTensor(t: Tensor): Array[Array[Int]] = {
+    t.array.data().asInt.map(i => Array(0, i))
   }
 
   def sameShape(other: Tensor): Boolean = shape sameElements other.shape
@@ -242,8 +234,8 @@ object Tensor {
 }
 
 case class TensorSelection(t: Tensor,
-                           indexes: Array[Array[Long]],
-                           shape: Option[Array[Long]]) {
+                           indexes: Array[Array[Int]],
+                           shape: Option[Array[Int]]) {
 
   def asTensor: Tensor = {
     val newData = indexes.map(ix => t.array.getDouble(ix: _*))
