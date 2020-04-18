@@ -88,10 +88,10 @@ package object numsca {
   def minimum(t: Tensor, d: Double): Tensor = t.minimum(d)
   def minimum(a: Tensor, b: Tensor): Tensor = a.minimum(b)
 
-  def max(t: Tensor): Tensor = new Tensor(Nd4j.max(t.array))
-  def max(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.max(t.array, axis))
-  def min(t: Tensor): Tensor = new Tensor(Nd4j.min(t.array))
-  def min(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.min(t.array, axis))
+  def max(t: Tensor): Tensor = new Tensor(Nd4j.expandDims(Nd4j.max(t.array), 0))
+  def max(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.expandDims(Nd4j.max(t.array, axis), 0))
+  def min(t: Tensor): Tensor = new Tensor(Nd4j.expandDims(Nd4j.min(t.array), 0))
+  def min(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.expandDims(Nd4j.min(t.array, axis), 0))
 
   def sum(t: Tensor): Double = Nd4j.sum(t.array).getDouble(0l, 0l)
   def sum(t: Tensor, axis: Int): Tensor = new Tensor(Nd4j.sum(t.array, axis))
