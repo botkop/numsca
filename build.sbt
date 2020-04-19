@@ -19,13 +19,15 @@ crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.1")
 // for instructions on how to publish to sonatype, see:
 // https://github.com/xerial/sbt-sonatype
 
-publishTo := {
-  val nexus = "https://oss.sonatype.org/"
-  if (isSnapshot.value)
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
+//publishTo := {
+//  val nexus = "https://oss.sonatype.org/"
+//  if (isSnapshot.value)
+//    Some("snapshots" at nexus + "content/repositories/snapshots")
+//  else
+//    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+//}
+
+publishTo := sonatypePublishToBundle.value
 
 pomIncludeRepository := { _ =>
   false
