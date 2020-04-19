@@ -14,7 +14,7 @@ lazy val root = (project in file(".")).settings(
   libraryDependencies += scalaTest % Test
 )
 
-crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.1")
+//crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.1")
 
 // for instructions on how to publish to sonatype, see:
 // https://github.com/xerial/sbt-sonatype
