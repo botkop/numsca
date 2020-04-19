@@ -41,9 +41,9 @@ object MinCharRnn {
       */
     def lossFun(inputs: List[Int], targets: List[Int], hprev: Tensor) = {
       val (xs, hs, ys, ps) = (new Array[Tensor](inputs.length),
-                              new Array[Tensor](inputs.length),
-                              new Array[Tensor](inputs.length),
-                              new Array[Tensor](inputs.length))
+        new Array[Tensor](inputs.length),
+        new Array[Tensor](inputs.length),
+        new Array[Tensor](inputs.length))
       hs(hs.length - 1) = ns.copy(hprev)
       var loss = 0.0
       // forward pass
@@ -135,13 +135,17 @@ object MinCharRnn {
       if (n % 100 == 0) println(s"iter $n, loss $smooth_loss") // print progress
 
       // perform parameter update with Adagrad
-      (List(Wxh, Whh, Why, bh, by),
-       List(dWxh, dWhh, dWhy, dbh, dby),
-       List(mWxh, mWhh, mWhy, mbh, mby)).zipped.foreach {
-        case (param, dparam, mem) =>
-          mem += dparam * dparam
-          param += -learning_rate * dparam / ns.sqrt(mem + 1e-8) // adagrad update
-      }
+      //      (List(Wxh, Whh, Why, bh, by),
+      //       List(dWxh, dWhh, dWhy, dbh, dby),
+      //       List(mWxh, mWhh, mWhy, mbh, mby)).zipped.foreach {
+      List(Wxh, Whh, Why, bh, by)
+        .lazyZip(List(dWxh, dWhh, dWhy, dbh, dby))
+        .lazyZip(List(mWxh, mWhh, mWhy, mbh, mby))
+        .foreach {
+          case (param, dparam, mem) =>
+            mem += dparam * dparam
+            param += -learning_rate * dparam / ns.sqrt(mem + 1e-8) // adagrad update
+        }
 
       p += seq_length // move data pointer
       n += 1 // iteration counter

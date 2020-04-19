@@ -6,7 +6,7 @@ import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.indexing.{INDArrayIndex, NDArrayIndex}
 import org.nd4j.linalg.ops.transforms.Transforms
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.language.{implicitConversions, postfixOps}
 
 class Tensor(val array: INDArray, val isBoolean: Boolean = false)
@@ -109,13 +109,13 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
     require(shape.product == 1)
     array.getDouble(0)
   }
-  def squeeze(index: Int*): Double = array.getDouble(index: _*)
-  def squeeze(index: Array[Int]): Double = squeeze(index: _*)
+  def squeeze(index: Array[Int]): Double = array.getDouble(index: _*)
+  def squeeze(index: Int*): Double = squeeze(index.toArray)
 
   /**
     * returns a view
     */
-  def apply(index: Int*): Tensor = {
+  def apply(index: Array[Int]): Tensor = {
     val ix = index.map(NDArrayIndex.point)
     new Tensor(array.get(ix: _*))
   }
@@ -123,7 +123,7 @@ class Tensor(val array: INDArray, val isBoolean: Boolean = false)
   /**
     * returns a view
     */
-  def apply(index: Array[Int]): Tensor = apply(index: _*)
+  def apply(index: Int*): Tensor = apply(index.toArray)
 
   private def handleNegIndex(i: Int, shapeIndex: Int) =
     if (i < 0) shape(shapeIndex) + i else i

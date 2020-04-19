@@ -10,7 +10,7 @@ import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.factory.Nd4j.PadMode
 import org.nd4j.linalg.ops.transforms.Transforms
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.language.implicitConversions
 import scala.util.Random
 
@@ -41,27 +41,27 @@ package object numsca {
 
   def rand: rng.Random = Nd4j.getRandom
 
-  def array(ds: Double*) = Tensor(ds: _*)
-  def zeros(shape: Int*): Tensor = new Tensor(Nd4j.zeros(shape: _*))
-  def zeros(shape: Array[Int]): Tensor = zeros(shape: _*)
+  def array(ds: Double*): Tensor = Tensor(ds: _*)
+  def zeros(shape: Array[Int]): Tensor = new Tensor(Nd4j.zeros(shape: _*))
+  def zeros(shape: Int*): Tensor = zeros(shape.toArray)
   def zerosLike(t: Tensor): Tensor = zeros(t.shape)
 
-  def ones(shape: Int*): Tensor = {
+  def ones(shape: Array[Int]): Tensor = {
     if (shape.length == 1)
       // probably a bug in nd4j
       new Tensor(Nd4j.ones(1 +: shape: _*))
     else
       new Tensor(Nd4j.ones(shape: _*))
   }
-  def ones(shape: Array[Int]): Tensor = ones(shape: _*)
+  def ones(shape: Int*): Tensor = ones(shape.toArray)
 
   def full(shape: Array[Int], value: Double): Tensor = zeros(shape) + value
 
-  def randn(shape: Int*): Tensor = new Tensor(Nd4j.randn(shape.toArray))
-  def randn(shape: Array[Int]): Tensor = randn(shape: _*)
+  def randn(shape: Array[Int]): Tensor = new Tensor(Nd4j.randn(shape.toArray))
+  def randn(shape: Int*): Tensor = randn(shape.toArray)
 
-  def rand(shape: Int*): Tensor = new Tensor(Nd4j.rand(shape.toArray))
-  def rand(shape: Array[Int]): Tensor = rand(shape: _*)
+  def rand(shape: Array[Int]): Tensor = new Tensor(Nd4j.rand(shape.toArray))
+  def rand(shape: Int*): Tensor = rand(shape.toArray)
 
   def randint(low: Int, shape: Array[Int]): Tensor = {
     val data = Array.fill(shape.product)(Random.nextInt(low).toDouble)
