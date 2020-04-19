@@ -1,11 +1,12 @@
 package botkop.numsca
 
 import botkop.{numsca => ns}
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.language.postfixOps
 
-class NumscaSpec extends FlatSpec with Matchers {
+class NumscaSpec extends AnyFlatSpec with Matchers {
 
   val ta: Tensor = ns.arange(10)
   val tb: Tensor = ns.reshape(ns.arange(9), 3, 3)
