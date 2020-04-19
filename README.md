@@ -51,9 +51,17 @@ Numsca piggybacks on [Nd4j](https://nd4j.org/). Thanks, people!
 
 ## Dependency
 Add this to build.sbt:
+
+For Scala 2.13:
 ```scala
 libraryDependencies += "be.botkop" %% "numsca" % "0.1.7"
 ```
+
+For Scala 2.11 and 2.12:
+```scala
+libraryDependencies += "be.botkop" %% "numsca" % "0.1.5"
+```
+
 
 ## Importing Numsca
 ```scala
