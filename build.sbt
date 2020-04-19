@@ -4,17 +4,17 @@ lazy val root = (project in file(".")).settings(
   inThisBuild(
     List(
       organization := "be.botkop",
-      scalaVersion := "2.12.4",
-      version := "0.1.6-SNAPSHOT"
+      scalaVersion := "2.13.1",
+      version := "0.1.7-SNAPSHOT"
     )),
   name := "numsca",
   libraryDependencies += "org.nd4j" % "nd4j-native-platform" % "0.9.1",
-  libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
+  libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
   libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3",
   libraryDependencies += scalaTest % Test
 )
 
-crossScalaVersions := Seq("2.11.12", "2.12.4")
+crossScalaVersions := Seq("2.11.12", "2.12.4", "2.13.1")
 
 // for instructions on how to publish to sonatype, see:
 // https://github.com/xerial/sbt-sonatype
@@ -54,3 +54,5 @@ developers := List(
 publishMavenStyle := true
 publishArtifact in Test := false
 // skip in publish := true
+
+scalacOptions ++= Seq("-deprecation", "-feature")
