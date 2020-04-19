@@ -3,7 +3,7 @@
 Numsca: Numpy for Scala
 =========================
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.12)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/be.botkop/numsca_2.13)
 [![Build Status](https://travis-ci.org/botkop/numsca.svg?branch=master)](https://travis-ci.org/botkop/numsca)
 
 Numsca is Numpy for Scala.
@@ -52,7 +52,7 @@ Numsca piggybacks on [Nd4j](https://nd4j.org/). Thanks, people!
 ## Dependency
 Add this to build.sbt:
 ```scala
-libraryDependencies += "be.botkop" %% "numsca" % "0.1.4"
+libraryDependencies += "be.botkop" %% "numsca" % "0.1.7"
 ```
 
 ## Importing Numsca
