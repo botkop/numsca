@@ -63,11 +63,11 @@ package object numsca {
   def rand(shape: Array[Int]): Tensor = new Tensor(Nd4j.rand(shape.toArray))
   def rand(shape: Int*): Tensor = rand(shape.toArray)
 
-  def randint(low: Int, shape: Array[Int]): Tensor = {
-    val data = Array.fill(shape.product)(Random.nextInt(low).toDouble)
+  def randint(high: Int, shape: Array[Int]): Tensor = {
+    val data = Array.fill(shape.product)(Random.nextInt(high + 1).toDouble)
     Tensor(data).reshape(shape)
   }
-  def randint(low: Int, shape: Int*): Tensor = randint(low, shape.toArray)
+  def randint(high: Int, shape: Int*): Tensor = randint(high, shape.toArray)
 
   def uniform(low: Double = 0.0,
               high: Double = 1.0,
