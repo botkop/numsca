@@ -58,3 +58,5 @@ publishArtifact in Test := false
 // skip in publish := true
 
 scalacOptions ++= Seq("-deprecation", "-feature")
+fork := true
+
