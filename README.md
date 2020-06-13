@@ -26,6 +26,8 @@ for (j <- 0 until 60000) {
 }
 ``` 
 
+I invite you to have a look at [this notebook](notebooks/dl-from-scratch.ipynb), which explains in simple terms how you can implement a neural net framework with Numca.
+
 Another example: a Scala translation of Andrej Karpathy's 
 ['Minimal character-level language model with a Vanilla Recurrent Neural Network'](src/main/scala/botkop/numsca/samples/MinCharRnn.scala).
 (Compare with Andrej Karpathy's original [post](https://gist.github.com/karpathy/d4dee566867f8291f086).)
