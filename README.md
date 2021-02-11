@@ -8,6 +8,9 @@ Numsca: Numpy for Scala
 
 Numsca is Numpy for Scala.
 
+I invite you to have a look at [this notebook](https://nbviewer.jupyter.org/github/botkop/numsca/blob/master/notebooks/dl-from-scratch.ipynb), 
+which explains in simple terms how you can implement a neural net framework with Numsca.
+
 Here's the famous [neural network in 11 lines of Python](http://iamtrask.github.io/2015/07/12/basic-python-network/), translated to Numsca:
 
 ```scala
@@ -25,8 +28,6 @@ for (j <- 0 until 60000) {
   w0 += x.T.dot(l1Delta)
 }
 ``` 
-
-I invite you to have a look at [this notebook](notebooks/dl-from-scratch.ipynb), which explains in simple terms how you can implement a neural net framework with Numsca.
 
 Another example: a Scala translation of Andrej Karpathy's 
 ['Minimal character-level language model with a Vanilla Recurrent Neural Network'](src/main/scala/botkop/numsca/samples/MinCharRnn.scala).
