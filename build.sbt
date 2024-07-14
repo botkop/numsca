@@ -8,7 +8,7 @@ lazy val root = (project in file(".")).settings(
       version := "0.1.7"
     )),
   name := "numsca",
-  libraryDependencies += "org.nd4j" % "nd4j-native-platform" % "0.9.1",
+  libraryDependencies += "org.nd4j" % "nd4j-native-platform" % "1.0.0-M2.1",
   libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
   libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3",
   libraryDependencies += scalaTest % Test
