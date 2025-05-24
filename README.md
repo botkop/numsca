@@ -8,10 +8,8 @@ Numsca: Numpy for Scala
 
 Numsca is Numpy for Scala.
 
-I invite you to have a look at [this notebook](https://nbviewer.jupyter.org/github/botkop/numsca/blob/master/notebooks/dl-from-scratch.ipynb), 
+I invite you to have a look at [this notebook](notebooks/dl-from-scratch.ipynb),
 which explains in simple terms how you can implement a neural net framework with Numsca.
-
-(If nbviewer barfs, then you can try [this notebook](notebooks/dl-from-scratch.ipynb))
 
 Here's the famous [neural network in 11 lines of Python](http://iamtrask.github.io/2015/07/12/basic-python-network/), translated to Numsca:
 
